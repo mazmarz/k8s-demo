@@ -7,9 +7,23 @@ nodes = [
 
 
 Vagrant.configure("2") do |config|
+
+
   
   config.vm.box = "google/gce"
   config.vm.synced_folder '.', '/vagrant', disabled: true
+
+  config.vm.provision :ansible , preserve_order: true do |ansible|
+    ansible.playbook = "k8s_playbook.yaml"
+    puts "all"
+    
+  end
+  config.vm.provision :ansible, preserve_order: true do |ansible|
+    ansible.playbook = "master_playbook.yaml"
+    puts "master"
+    
+  end
+  
   
   nodes.each do |node|
 
@@ -18,31 +32,21 @@ Vagrant.configure("2") do |config|
       
       
       hostname.vm.provider :google do |google, override|
-        google.google_project_id = "playground-s-11-a95d40"
-        google.google_json_key_location = "/home/marco/puppet/playground-s-11-a95d40-1448a44f8edf.json"
+        google.google_project_id = "playground-s-11-d19c7b"
+        google.google_json_key_location = "/home/marco/puppet/playground-s-11-d19c7b-bf020550a8a7.json"
         google.image_family = 'rhel-7'
         google.name = node[:hostname]
         override.ssh.username = "marco"
         override.ssh.private_key_path = "~/.ssh/id_rsa"
       end
 
-
     end
-
-    config.vm.provision :ansible do |ansible|
-      ansible.playbook = "k8s_playbook.yaml"
-      puts "all"
-    end
-
-    config.vm.define :master do |master|
-      config.vm.provision :ansible do |ansible|
-        ansible.playbook = "master_playbook.yaml"
-        puts "master"
-      end
-    end
-    
-    
+      
   end
+
+  
+    
+
 
     
   
