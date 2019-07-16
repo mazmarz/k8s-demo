@@ -23,7 +23,15 @@ Vagrant.configure("2") do |config|
     puts "master"
     
   end
-  
+  config.vm.provision :ansible, preserve_order: true do |ansible|
+    ansible.playbook = "workers_playbook.yaml"
+    ansible.groups = {
+      "workers" => ["worker1","worker2"],
+      "master" => ["master"]
+    }    
+    puts "workers"
+    
+  end
   
   nodes.each do |node|
 
@@ -32,8 +40,8 @@ Vagrant.configure("2") do |config|
       
       
       hostname.vm.provider :google do |google, override|
-        google.google_project_id = "playground-s-11-d19c7b"
-        google.google_json_key_location = "/home/marco/puppet/playground-s-11-d19c7b-bf020550a8a7.json"
+        google.google_project_id = "playground-s-11-124608"
+        google.google_json_key_location = "/home/marco/puppet/playground-s-11-124608-8c5ba3be77c2.json"
         google.image_family = 'rhel-7'
         google.name = node[:hostname]
         override.ssh.username = "marco"
