@@ -1,7 +1,7 @@
 nodes = [
-  {ID: 1,  hostname: 'k8m', box: 'mgmazzucco/CentOS7_ESX', role: 'master' },
-  {ID: 2,  hostname: 'k8n1', box: 'mgmazzucco/CentOS7_ESX' , role: 'worker' },
-  {ID: 3,  hostname: 'k8n2', box: 'mgmazzucco/CentOS7_ESX' , role: 'worker' }
+  {ID: 1,  hostname: 'master', box: 'mgmazzucco/CentOS7_ESX', role: 'master' },
+  {ID: 2,  hostname: 'worker1', box: 'mgmazzucco/CentOS7_ESX' , role: 'worker' },
+  {ID: 3,  hostname: 'worker2', box: 'mgmazzucco/CentOS7_ESX' , role: 'worker' }
 ]
 
 
