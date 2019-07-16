@@ -13,18 +13,17 @@ Vagrant.configure("2") do |config|
   
   nodes.each do |node|
 
-    config.vm.define node[:role] do |role|
+    config.vm.define node[:hostname] do |hostname|
 
       
       
-      role.vm.provider :google do |google, override|
-        google.google_project_id = "playground-s-11-47343c"
-        google.google_json_key_location = "/home/marco/puppet/playground-s-11-47343c-ea28dee7e6ef.json"
+      hostname.vm.provider :google do |google, override|
+        google.google_project_id = "playground-s-11-a95d40"
+        google.google_json_key_location = "/home/marco/puppet/playground-s-11-a95d40-1448a44f8edf.json"
         google.image_family = 'rhel-7'
         google.name = node[:hostname]
         override.ssh.username = "marco"
         override.ssh.private_key_path = "~/.ssh/id_rsa"
-        puts node[:role]
       end
 
 
@@ -32,9 +31,19 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision :ansible do |ansible|
       ansible.playbook = "k8s_playbook.yaml"
+      puts "all"
     end
 
-
+    config.vm.define :master do |master|
+      config.vm.provision :ansible do |ansible|
+        ansible.playbook = "master_playbook.yaml"
+        puts "master"
+      end
+    end
+    
     
   end
+
+    
+  
 end
