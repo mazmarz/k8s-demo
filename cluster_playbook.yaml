@@ -31,7 +31,6 @@
       args:
         chdir: $HOME
         creates: pod_network_setup.txt
----
 - hosts: master
   become: yes
   gather_facts: false

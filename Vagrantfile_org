@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
       google.name = 'node'
       google.name = node[:hostname]
       override.ssh.username = "marco"
-      override.ssh.private_key_path = "~/.ssh/id_rsa"
+  1    override.ssh.private_key_path = "~/.ssh/id_rsa"
     end
   end
 

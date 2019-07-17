@@ -1,0 +1,653 @@
+[marco@dude puppet]$ vagrant up
+all
+master
+workers
+Bringing machine 'master' up with 'google' provider...
+Bringing machine 'worker1' up with 'google' provider...
+Bringing machine 'worker2' up with 'google' provider...
+==> master: Checking if box 'google/gce' version '0.1.0' is up to date...
+==> worker2: Checking if box 'google/gce' version '0.1.0' is up to date...
+==> worker2: Launching an instance with the following settings...
+==> worker2:  -- Name:            worker2
+==> worker2:  -- Project:         playground-s-11-124608
+==> worker1: Checking if box 'google/gce' version '0.1.0' is up to date...
+==> worker2:  -- Type:            n1-standard-1
+==> worker2:  -- Disk type:       pd-standard
+==> worker2:  -- Disk size:       10 GB
+==> worker2:  -- Disk name:
+==> worker2:  -- Image:
+==> worker2:  -- Image family:    rhel-7
+==> worker2:  -- Instance Group:
+==> worker1: Launching an instance with the following settings...
+==> worker2:  -- Zone:            us-central1-f
+==> worker1:  -- Name:            worker1
+==> worker2:  -- Network:         default
+==> worker1:  -- Project:         playground-s-11-124608
+==> worker1:  -- Type:            n1-standard-1
+==> worker2:  -- Network Project: playground-s-11-124608
+==> worker1:  -- Disk type:       pd-standard
+==> worker2:  -- Metadata:        '{}'
+==> worker1:  -- Disk size:       10 GB
+==> worker2:  -- Labels:          '{}'
+==> worker1:  -- Disk name:
+==> worker2:  -- Network tags:    '[]'
+==> worker1:  -- Image:
+==> worker2:  -- IP Forward:
+==> worker1:  -- Image family:    rhel-7
+==> worker2:  -- Use private IP:  false
+==> worker1:  -- Instance Group:
+==> worker2:  -- External IP:
+==> worker1:  -- Zone:            us-central1-f
+==> worker2:  -- Preemptible:     false
+==> worker1:  -- Network:         default
+==> worker2:  -- Auto Restart:    true
+==> worker1:  -- Network Project: playground-s-11-124608
+==> worker2:  -- On Maintenance:  MIGRATE
+==> worker1:  -- Metadata:        '{}'
+==> worker2:  -- Autodelete Disk: true
+==> worker2:  -- Additional Disks:[]
+==> worker1:  -- Labels:          '{}'
+==> worker1:  -- Network tags:    '[]'
+==> worker1:  -- IP Forward:
+==> worker1:  -- Use private IP:  false
+==> worker1:  -- External IP:
+==> worker1:  -- Preemptible:     false
+==> worker1:  -- Auto Restart:    true
+==> worker1:  -- On Maintenance:  MIGRATE
+==> worker1:  -- Autodelete Disk: true
+==> worker1:  -- Additional Disks:[]
+==> master: Launching an instance with the following settings...
+==> master:  -- Name:            master
+==> master:  -- Project:         playground-s-11-124608
+==> master:  -- Type:            n1-standard-1
+==> master:  -- Disk type:       pd-standard
+==> master:  -- Disk size:       10 GB
+==> master:  -- Disk name:
+==> master:  -- Image:
+==> master:  -- Image family:    rhel-7
+==> master:  -- Instance Group:
+==> master:  -- Zone:            us-central1-f
+==> master:  -- Network:         default
+==> master:  -- Network Project: playground-s-11-124608
+==> master:  -- Metadata:        '{}'
+==> master:  -- Labels:          '{}'
+==> master:  -- Network tags:    '[]'
+==> master:  -- IP Forward:
+==> master:  -- Use private IP:  false
+==> master:  -- External IP:
+==> master:  -- Preemptible:     false
+==> master:  -- Auto Restart:    true
+==> master:  -- On Maintenance:  MIGRATE
+==> master:  -- Autodelete Disk: true
+==> master:  -- Additional Disks:[]
+==> worker2: Waiting for instance to become "ready"...
+==> worker1: Waiting for instance to become "ready"...
+==> worker2: Machine is booted and ready for use!
+==> worker2: Waiting for SSH to become available...
+==> worker1: Machine is booted and ready for use!
+==> worker1: Waiting for SSH to become available...
+==> master: Waiting for instance to become "ready"...
+==> master: Machine is booted and ready for use!
+==> master: Waiting for SSH to become available...
+==> worker2: Machine is ready for SSH access!
+==> worker2: Running provisioner: ansible...
+==> worker1: Machine is ready for SSH access!
+==> worker1: Running provisioner: ansible...
+==> master: Machine is ready for SSH access!
+==> master: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    worker2: Running ansible-playbook...
+    master: Running ansible-playbook...
+    worker1: Running ansible-playbook...
+
+PLAY [all] *********************************************************************
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+
+TASK [Gathering Facts] *********************************************************
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [worker1]
+
+TASK [install Docker] **********************************************************
+ok: [worker2]
+
+TASK [install Docker] **********************************************************
+ok: [master]
+
+TASK [install Docker] **********************************************************
+changed: [master]
+
+TASK [start Docker] ************************************************************
+changed: [worker2]
+
+TASK [start Docker] ************************************************************
+changed: [worker1]
+
+TASK [start Docker] ************************************************************
+changed: [master]
+
+TASK [disable SELinux] *********************************************************
+changed: [worker2]
+
+TASK [disable SELinux] *********************************************************
+changed: [worker1]
+
+TASK [disable SELinux] *********************************************************
+changed: [master]
+
+TASK [disable SELinux on reboot] ***********************************************
+changed: [worker1]
+
+TASK [disable SELinux on reboot] ***********************************************
+changed: [worker2]
+
+TASK [disable SELinux on reboot] ***********************************************
+changed: [master]
+ [WARNING]: SELinux state change will take effect next reboot
+
+
+TASK [ensure net.bridge.bridge-nf-call-ip6tables is set to 1] ******************
+ [WARNING]: SELinux state change will take effect next reboot
+
+changed: [worker1]
+
+TASK [ensure net.bridge.bridge-nf-call-ip6tables is set to 1] ******************
+ [WARNING]: SELinux state change will take effect next reboot
+
+changed: [worker2]
+
+TASK [ensure net.bridge.bridge-nf-call-ip6tables is set to 1] ******************
+ [WARNING]: The value 1 (type int) in a string field was converted to u'1'
+(type string). If this does not look like what you expect, quote the entire
+value to ensure it does not change.
+
+changed: [master]
+
+TASK [ensure net.bridge.bridge-nf-call-iptables is set to 1] *******************
+ [WARNING]: The value 1 (type int) in a string field was converted to u'1'
+(type string). If this does not look like what you expect, quote the entire
+value to ensure it does not change.
+
+changed: [worker1]
+
+TASK [ensure net.bridge.bridge-nf-call-iptables is set to 1] *******************
+ [WARNING]: The value 1 (type int) in a string field was converted to u'1'
+(type string). If this does not look like what you expect, quote the entire
+value to ensure it does not change.
+
+changed: [worker2]
+
+TASK [ensure net.bridge.bridge-nf-call-iptables is set to 1] *******************
+
+
+
+
+changed: [master]
+
+TASK [add Kubernetes' YUM repository] ******************************************
+
+changed: [worker1]
+
+TASK [add Kubernetes' YUM repository] ******************************************
+changed: [worker2]
+
+TASK [add Kubernetes' YUM repository] ******************************************
+changed: [master]
+
+TASK [install kubelet] *********************************************************
+changed: [worker1]
+
+TASK [install kubelet] *********************************************************
+changed: [worker2]
+
+TASK [install kubelet] *********************************************************
+changed: [worker2]
+
+TASK [install kubeadm] *********************************************************
+changed: [worker1]
+
+TASK [install kubeadm] *********************************************************
+changed: [master]
+
+TASK [install kubeadm] *********************************************************
+changed: [worker1]
+
+TASK [start kubelet] ***********************************************************
+changed: [master]
+
+TASK [start kubelet] ***********************************************************
+changed: [worker2]
+
+TASK [start kubelet] ***********************************************************
+changed: [worker1]
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+worker1                    : ok=11   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+changed: [master]
+
+PLAY [master] ******************************************************************
+
+TASK [Gathering Facts] *********************************************************
+==> worker1: Running provisioner: ansible...
+changed: [worker2]
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+worker2                    : ok=11   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> worker2: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+ok: [master]
+
+TASK [install kubectl] *********************************************************
+    worker1: Running ansible-playbook...
+    worker2: Running ansible-playbook...
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+
+==> worker1: Running provisioner: ansible...
+ok: [master]
+
+PLAY RECAP *********************************************************************
+master                     : ok=13   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> master: Running provisioner: ansible...
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+
+==> worker2: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    worker1: Running ansible-playbook...
+    master: Running ansible-playbook...
+    worker2: Running ansible-playbook...
+ [WARNING]: Found both group and host with same name: master
+
+ [WARNING]: Found both group and host with same name: master
+
+ [WARNING]: Found both group and host with same name: master
+
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY [workers] *****************************************************************
+
+TASK [Gathering Facts] *********************************************************
+
+PLAY [master] ******************************************************************
+
+TASK [Gathering Facts] *********************************************************
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY [workers] *****************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [worker1]
+
+TASK [join cluster] ************************************************************
+fatal: [worker1]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'ansible.vars.hostvars.HostVarsVars o
+bject' has no attribute 'join_command'\n\nThe error appears to be in '/home/marco/puppet/workers_playbook.yaml': line 17, column 7, but may\nbe el
+sewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: join cluster\n      ^ her
+e\n"}
+
+PLAY RECAP *********************************************************************
+worker1                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+ok: [master]
+
+TASK [initialize the cluster] **************************************************
+==> worker1: An error occurred. The error will be shown after all tasks complete.
+ok: [worker2]
+
+TASK [join cluster] ************************************************************
+fatal: [worker2]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'ansible.vars.hostvars.HostVarsVars o
+bject' has no attribute 'join_command'\n\nThe error appears to be in '/home/marco/puppet/workers_playbook.yaml': line 17, column 7, but may\nbe el
+sewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: join cluster\n      ^ her
+e\n"}
+
+PLAY RECAP *********************************************************************
+worker2                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+==> worker2: An error occurred. The error will be shown after all tasks complete.
+changed: [master]
+
+TASK [create .kube directory] **************************************************
+changed: [master]
+
+TASK [copy admin.conf to user's kube config] ***********************************
+changed: [master]
+
+TASK [install Pod network] *****************************************************
+changed: [master]
+
+PLAY RECAP *********************************************************************
+master                     : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> master: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    master: Running ansible-playbook...
+ [WARNING]: Found both group and host with same name: master
+
+
+PLAY [master] ******************************************************************
+
+TASK [get join command] ********************************************************
+changed: [master]
+
+TASK [set join command] ********************************************************
+ok: [master]
+
+PLAY [workers] *****************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+master                     : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+An error occurred while executing multiple actions in parallel.
+Any errors that occurred are shown below.
+
+An error occurred while executing the action on the 'worker1'
+machine. Please handle this error then try again:
+
+Ansible failed to complete successfully. Any error output should be
+visible above. Please fix these errors and try again.
+
+An error occurred while executing the action on the 'worker2'
+machine. Please handle this error then try again:
+
+Ansible failed to complete successfully. Any error output should be
+visible above. Please fix these errors and try again.
+[marco@dude puppet]$
+[marco@dude puppet]$
+[marco@dude puppet]$
+[marco@dude puppet]$
+[marco@dude puppet]$
+[marco@dude puppet]$ vagrant provision
+all
+master
+workers
+==> master: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    master: Running ansible-playbook...
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [master]
+
+TASK [install Docker] **********************************************************
+ok: [master]
+
+TASK [start Docker] ************************************************************
+ok: [master]
+
+TASK [disable SELinux] *********************************************************
+changed: [master]
+
+TASK [disable SELinux on reboot] ***********************************************
+ [WARNING]: SELinux state change will take effect next reboot
+
+ok: [master]
+
+TASK [ensure net.bridge.bridge-nf-call-ip6tables is set to 1] ******************
+ [WARNING]: The value 1 (type int) in a string field was converted to u'1'
+(type string). If this does not look like what you expect, quote the entire
+value to ensure it does not change.
+
+ok: [master]
+
+TASK [ensure net.bridge.bridge-nf-call-iptables is set to 1] *******************
+ok: [master]
+
+TASK [add Kubernetes' YUM repository] ******************************************
+ok: [master]
+
+TASK [install kubelet] *********************************************************
+ok: [master]
+
+TASK [install kubeadm] *********************************************************
+ok: [master]
+
+TASK [start kubelet] ***********************************************************
+ok: [master]
+
+PLAY [master] ******************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [master]
+
+TASK [install kubectl] *********************************************************
+ok: [master]
+
+PLAY RECAP *********************************************************************
+master                     : ok=13   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> master: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    master: Running ansible-playbook...
+
+PLAY [master] ******************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [master]
+
+TASK [initialize the cluster] **************************************************
+ok: [master]
+
+TASK [create .kube directory] **************************************************
+ok: [master]
+
+TASK [copy admin.conf to user's kube config] ***********************************
+ok: [master]
+
+TASK [install Pod network] *****************************************************
+ok: [master]
+
+PLAY RECAP *********************************************************************
+master                     : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> master: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    master: Running ansible-playbook...
+ [WARNING]: Found both group and host with same name: master
+
+
+PLAY [master] ******************************************************************
+
+TASK [get join command] ********************************************************
+changed: [master]
+
+TASK [set join command] ********************************************************
+ok: [master]
+
+PLAY [workers] *****************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+master                     : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> worker1: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    worker1: Running ansible-playbook...
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [worker1]
+
+TASK [install Docker] **********************************************************
+ok: [worker1]
+
+TASK [start Docker] ************************************************************
+ok: [worker1]
+
+TASK [disable SELinux] *********************************************************
+changed: [worker1]
+
+TASK [disable SELinux on reboot] ***********************************************
+ [WARNING]: SELinux state change will take effect next reboot
+
+ok: [worker1]
+
+TASK [ensure net.bridge.bridge-nf-call-ip6tables is set to 1] ******************
+ [WARNING]: The value 1 (type int) in a string field was converted to u'1'
+(type string). If this does not look like what you expect, quote the entire
+value to ensure it does not change.
+
+ok: [worker1]
+
+TASK [ensure net.bridge.bridge-nf-call-iptables is set to 1] *******************
+ok: [worker1]
+
+TASK [add Kubernetes' YUM repository] ******************************************
+ok: [worker1]
+
+TASK [install kubelet] *********************************************************
+ok: [worker1]
+
+TASK [install kubeadm] *********************************************************
+ok: [worker1]
+
+TASK [start kubelet] ***********************************************************
+ok: [worker1]
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+worker1                    : ok=11   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> worker1: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    worker1: Running ansible-playbook...
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY RECAP *********************************************************************
+
+==> worker1: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.8.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    worker1: Running ansible-playbook...
+ [WARNING]: Found both group and host with same name: master
+
+
+PLAY [master] ******************************************************************
+skipping: no hosts matched
+
+PLAY [workers] *****************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [worker1]
+
+TASK [join cluster] ************************************************************
+fatal: [worker1]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'ansible.vars.hostvars.HostVarsVars o
+bject' has no attribute 'join_command'\n\nThe error appears to be in '/home/marco/puppet/workers_playbook.yaml': line 17, column 7, but may\nbe el
+sewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: join cluster\n      ^ her
+e\n"}
+
+PLAY RECAP *********************************************************************
+worker1                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+Ansible failed to complete successfully. Any error output should be
+visible above. Please fix these errors and try again.
+[marco@dude puppet]$
