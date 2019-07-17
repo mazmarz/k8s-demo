@@ -1,0 +1,10 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: install guestbook
+      become: yes
+      become_user: marco
+      shell: kubectl apply -f https://raw.githubusercontent.com/mazmarz/examples-1/master/guestbook/all-in-one/guestbook-all-in-one.yaml >> guestbook.txt
+      args:
+        chdir: $HOME
+        creates: guestbook
