@@ -1,5 +1,27 @@
-credentials = 'playground-s-11-e3bd2e-4124c19ed7c2.json'
-projectID = 'playground-s-11-e3bd2e'
+
+
+require 'getoptlong'
+
+opts = GetoptLong.new(
+  [ '--credentials' , GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--project_id', GetoptLong::OPTIONAL_ARGUMENT ]
+)
+
+projectID=''
+credentials=''
+
+opts.each do |opt, arg|
+  case opt
+    when '--project_id'
+      projectID=arg
+    when '--credentials'
+      credentials=arg
+  end
+end
+
+
+#credentials = 'playground-s-11-e49d28-07e7f0721a24.json'
+#projectID = 'playground-s-11-e49d28'
 
 nodes = [
   {ID: 1,  hostname: 'master', box: 'mgmazzucco/CentOS7_ESX', role: 'master' },
@@ -22,7 +44,6 @@ Vagrant.configure("2") do |config|
       "master" => ["master"]
     }
     ansible.playbook = "k8s_playbook.yaml"
-    puts "all"
     
   end
   # config.vm.provision :ansible, preserve_order: true do |ansible|
