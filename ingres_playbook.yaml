@@ -1,0 +1,29 @@
+
+- hosts: master
+  become: yes
+  tasks:
+    - name: install nginx ingress pod
+      become: yes
+      become_user: marco
+      shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+      args:
+        chdir: $HOME
+        creates: guestbook
+    - name: install metallb
+      become: yes
+      become_user: marco
+      shell: kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
+    - name: Build metallb_config
+      template:
+        src: metallb_config.j2
+        dest: metallb_config.yaml
+    - name: Apply metallb_config
+      become: yes
+      become_user: marco
+      shell: kubectl apply -f metallb_config.yaml
+    - name: Start ingress controller
+      become: yes
+      become_user: marco
+      shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+      
+      

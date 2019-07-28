@@ -1,0 +1,4 @@
+{{ ansible_host }}
+{{ hostvars['worker1'].ansible_host }}-{{ hostvars['worker2'].ansible_host }}
+This line won't be changed
+Variable given as inline - {{ inline_variable }} - :)
