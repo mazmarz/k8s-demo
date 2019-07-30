@@ -55,6 +55,14 @@
        name: kubelet
        enabled: yes
        state: started
+       
+   - name: stop firewalld
+     service:
+       name: firewalld
+       enabled: no
+       state: stopped
+       
+       
 
 - hosts: master
   become: yes
