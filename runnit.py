@@ -47,6 +47,16 @@ if len(sys.argv) > 1:
             subprocess.Popen(["ansible-playbook", "ingress_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
+        try:
+            print("### Setting up the metric controller")
+            subprocess.Popen(["ansible-playbook", "metric_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+        except subprocess.CalledProcessError:
+            sys.exit(-2)
+        try:
+            print("### Setting up the guestbook")
+            subprocess.Popen(["ansible-playbook", "guestbook_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+        except subprocess.CalledProcessError:
+            sys.exit(-2)
 
 
     elif vagrantCommand == "status":
