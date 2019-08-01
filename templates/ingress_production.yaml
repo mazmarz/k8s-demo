@@ -1,14 +1,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-stagging
-  namespace: stagging
+  name: ingress-production
+  namespace: production
   annotations:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - host: stagging-guestbook.mstakx.io
+  - host: guestbook.mstakx.io
     http:
       paths:
       - path: /
