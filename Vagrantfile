@@ -63,8 +63,8 @@ Vagrant.configure("2") do |config|
         google.google_json_key_location = "/home/marco/puppet/#{credentials}"
         google.image_family = 'rhel-7'
         google.name = node[:hostname]
-        override.ssh.username = "marco"
-        override.ssh.private_key_path = "~/.ssh/id_rsa"
+        override.ssh.username = %x{whoami}.chomp()
+        override.ssh.private_key_path = "~/.ssh/google_compute_engine"
       end
 
     end
