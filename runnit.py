@@ -8,6 +8,85 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Setup K8s environment and run some tests')
 
+def ansibleSetup():
+
+    try:
+        print("#### Setting up the K8s cluster")
+        subprocess.Popen(["ansible-playbook", "cluster_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+    except subprocess.CalledProcessError:
+        sys.exit(-2)
+    try:
+        print("### Setting up the Ingress controller")
+        subprocess.Popen(["ansible-playbook", "ingress_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+    except subprocess.CalledProcessError:
+        sys.exit(-2)
+    try:
+        print("### Setting up the metric controller")
+        subprocess.Popen(["ansible-playbook", "metric_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+    except subprocess.CalledProcessError:
+        sys.exit(-2)
+    try:
+        print("### Setting up the guestbook")
+        subprocess.Popen(["ansible-playbook", "guestbook_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+    except subprocess.CalledProcessError:
+        sys.exit(-2)
+
+### setup the network
+
+def networkSetup():
+
+    try:
+        subprocess.check_call(["gcloud", "compute", "target-pools", "create", "guest-pool"])
+    except subprocess.CalledProcessError:
+        print("target-pool already created")
+
+    try:
+        print("start")
+        subprocess.Popen("gcloud compute target-pools add-instances guest-pool --instances master,worker1,worker2 --instances-zone us-central1-f",shell=True).wait()
+        print("end")
+    except subprocess.CalledProcessError:
+        print("added instances to pool already")
+        
+    try:
+        subprocess.check_call(["gcloud", "compute", "addresses", "create", "lb-ip", "--region", "us-central1"])
+    except subprocess.CalledProcessError:
+        print("static IP created already")
+                           
+    try:
+        subprocess.Popen("gcloud compute forwarding-rules create www-rule --region us-central1 --ports 80 --address lb-ip --target-pool guest-pool",shell=True).wait()
+    except subprocess.CalledProcessError:
+        print("forwarding rule created already")
+
+    try:
+        subprocess.check_call(["gcloud", "compute", "firewall-rules", "create", "open", "--allow", "tcp:80"])
+    except subprocess.CalledProcessError:
+        print("firewall rule created already")
+
+    lb_output = subprocess.getoutput('gcloud compute addresses list')
+
+    for line in lb_output.splitlines():
+        print("line: " + line)
+        if re.match('^lb-ip',line):
+            obj = re.search('(\d+\.\d+\.\d+\.\d+)',line)
+            ip = obj.group()
+            print("ip :" + ip )
+
+    return ip
+
+
+
+
+
+#
+#   [marco@dude templates]$ gcloud compute addresses list
+#   NAME   REGION       ADDRESS      STATUS
+#   lb-ip  us-central1  34.66.93.63  IN_USE
+
+#  
+#
+#
+#
+
 
 listing = subprocess.getoutput('ls -rt')
 
@@ -55,24 +134,15 @@ if len(sys.argv) > 1:
             subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'up'])
         except subprocess.CalledProcessError:
             sys.exit(-2)
+
+#    Finally launch the ansible code:
+        ansibleSetup()
+#    And setup load balancer and firewall        
+        ip_address = networkSetup()
+
         try:
-            print("#### Setting up the K8s cluster")
-            subprocess.Popen(["ansible-playbook", "cluster_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
-        except subprocess.CalledProcessError:
-            sys.exit(-2)
-        try:
-            print("### Setting up the Ingress controller")
-            subprocess.Popen(["ansible-playbook", "ingress_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
-        except subprocess.CalledProcessError:
-            sys.exit(-2)
-        try:
-            print("### Setting up the metric controller")
-            subprocess.Popen(["ansible-playbook", "metric_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
-        except subprocess.CalledProcessError:
-            sys.exit(-2)
-        try:
-            print("### Setting up the guestbook")
-            subprocess.Popen(["ansible-playbook", "guestbook_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+            print("### Setting up static IP address")
+            subprocess.Popen(["ansible-playbook", "patch_svc_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False", "ip_address": ip_address }).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
 

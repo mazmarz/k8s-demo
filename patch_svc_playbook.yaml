@@ -1,0 +1,16 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: Write static IP address into manifest
+      become: yes
+      become_user: marco
+      template:
+        src: patch.yaml
+        dest: patch.yaml
+    - name: Finally startup HPA for production guestbook frontend (apply manifest)
+      become: yes
+      become_user: marco
+      shell: kubectl -n ingress-nginx  patch svc ingress-nginx -p "$(cat patch.yaml)"
+      args:
+        chdir: $HOME
+        creates: patch_nginx.txt

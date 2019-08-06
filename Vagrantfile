@@ -44,6 +44,7 @@ Vagrant.configure("2") do |config|
       "master" => ["master"]
     }
     ansible.playbook = "k8s_playbook.yaml"
+    puts "bye"
     
   end
   # config.vm.provision :ansible, preserve_order: true do |ansible|

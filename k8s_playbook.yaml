@@ -61,14 +61,11 @@
        name: firewalld
        enabled: no
        state: stopped
-       
-       
-
-- hosts: master
-  become: yes
-  tasks:
    - name: install kubectl
      yum:
-        name: kubectl
-        state: present
-        allow_downgrade: yes
+       name: kubectl
+       state: present
+       allow_downgrade: yes
+
+       
+       
