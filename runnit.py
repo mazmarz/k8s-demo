@@ -138,10 +138,10 @@ if len(sys.argv) > 1:
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
-    try:
-        subprocess.check_call(["gcloud", "compute", "firewall-rules", "create", "open", "--allow", "tcp:80,tcp:22"])
-    except subprocess.CalledProcessError:
-        print("firewall rule created already")
+        try:
+            subprocess.check_call(["gcloud", "compute", "firewall-rules", "create", "open", "--allow", "tcp:80,tcp:22"])
+        except subprocess.CalledProcessError:
+            print("firewall rule created already")
 
                 
         try:
