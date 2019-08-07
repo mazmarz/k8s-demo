@@ -1,0 +1,10 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: Watch hpa process scale up an down
+      become: yes
+      become_user: marco
+      shell: kubectl -n stagging get hpa --watch
+#      args:
+#        chdir: $HOME
+#        creates: patch_nginx.txt

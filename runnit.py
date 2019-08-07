@@ -154,9 +154,9 @@ if len(sys.argv) > 1:
 
             
 #    Finally launch the ansible code:
-#        ansibleSetup()
+        ansibleSetup()
 #    And setup load balancer and firewall        
-#        ip_address = networkSetup()
+        ip_address = networkSetup()
 
         try:
             print("### Setting up static IP address")
@@ -188,7 +188,7 @@ if len(sys.argv) > 1:
 
     elif vagrantCommand == "test":
         try:
-            subprocess.getoutput(['ssh','-i','~/.ssh/id_rsa.pub','kubectl get hpa -A'])
+            subprocess.Popen(['ansible-playbook','watch_hpa.yaml',"-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"])
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
