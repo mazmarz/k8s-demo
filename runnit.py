@@ -58,10 +58,6 @@ def networkSetup():
     except subprocess.CalledProcessError:
         print("forwarding rule created already")
 
-    try:
-        subprocess.check_call(["gcloud", "compute", "firewall-rules", "create", "open", "--allow", "tcp:80"])
-    except subprocess.CalledProcessError:
-        print("firewall rule created already")
 
     lb_output = subprocess.getoutput('gcloud compute addresses list')
 
@@ -141,7 +137,12 @@ if len(sys.argv) > 1:
             subprocess.check_call(['gcloud',"compute","config-ssh"] )
         except subprocess.CalledProcessError:
             sys.exit(-2)
-                          
+
+    try:
+        subprocess.check_call(["gcloud", "compute", "firewall-rules", "create", "open", "--allow", "tcp:80,tcp:22"])
+    except subprocess.CalledProcessError:
+        print("firewall rule created already")
+
                 
         try:
 #            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'up',])
