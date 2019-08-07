@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import subprocess
+import subprocess 
 import sys
 import os
 import re
@@ -187,10 +187,29 @@ if len(sys.argv) > 1:
             sys.exit(-2)
 
     elif vagrantCommand == "test":
+
+        ip=''
+        with open(".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory",mode='r') as fp:
+            for line in fp:
+                if re.match('^master',line):
+                    obj = re.search('(\d+\.\d+\.\d+\.\d+)',line)
+                    if obj:
+                        ip = obj.group()
+
         try:
-            subprocess.Popen(['ansible-playbook','watch_hpa.yaml',"-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory"])
+            print("ip: " + ip)
+            lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl -n stagging get hpa --watch".format(ip),shell=True,stdout=subprocess.PIPE)
+            while lines.poll() is None:
+                line=lines.stdout.readline().strip()
+                print(line)
+                
+            
         except subprocess.CalledProcessError:
             sys.exit(-2)
+
+            
+
+        
 
 
     else:
