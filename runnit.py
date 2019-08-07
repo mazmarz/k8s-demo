@@ -2,6 +2,7 @@
 
 import subprocess
 import sys
+import os
 import re
 import json
 import argparse
@@ -99,7 +100,7 @@ with  open(theFile) as json_file:
 print(data['project_id'])
 
 
-
+os.environ.update({"PROJECT_ID": data['project_id'], "CREDENTIALS": theFile})
 
 
 if len(sys.argv) > 1:
@@ -112,9 +113,21 @@ if len(sys.argv) > 1:
         else:
             machine = ""
         try:
-            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'ssh',machine] )
+#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'ssh',machine] )
+            subprocess.Popen(['vagrant','ssh', machine], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
+
+    elif vagrantCommand == "provision":            
+            
+        try:
+#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'provision',])
+            subprocess.Popen(['vagrant','provision'], env=dict(os.environ) ).wait()
+
+        except subprocess.CalledProcessError:
+            sys.exit(-2)
+
+
 
     elif vagrantCommand == "up":
 
@@ -131,14 +144,19 @@ if len(sys.argv) > 1:
                           
                 
         try:
-            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'up'])
+#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'up',])
+            print("starting vargrant")
+            proc = subprocess.Popen(['vagrant','up'], env=dict(os.environ) )
+            proc.wait()
+            print("finished vargrant")
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
+            
 #    Finally launch the ansible code:
-        ansibleSetup()
+#        ansibleSetup()
 #    And setup load balancer and firewall        
-        ip_address = networkSetup()
+#        ip_address = networkSetup()
 
         try:
             print("### Setting up static IP address")
@@ -149,19 +167,22 @@ if len(sys.argv) > 1:
 
     elif vagrantCommand == "status":
         try:
-            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'status'] )
+#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'status'] )
+            subprocess.Popen(['vagrant','status'], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
     elif vagrantCommand == "halt":
         try:
-            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'halt'] )
+#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'halt'] )
+            subprocess.Popen(['vagrant','halt'], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
     elif vagrantCommand == "destroy":
         try:
-            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'destroy','--force'] )
+ #           subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'destroy'] )
+            subprocess.Popen(['vagrant','destroy','-f'], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
