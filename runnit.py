@@ -198,9 +198,10 @@ if len(sys.argv) > 1:
 
         try:
             print("ip: " + ip)
+            subprocess.Popen(" ab -c 1000 -n 20000 http://stagging-guestbook.mstakx.io/ ",shell=True)
             lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl -n stagging get hpa --watch".format(ip),shell=True,stdout=subprocess.PIPE)
             while lines.poll() is None:
-                line=lines.stdout.readline().strip()
+                line=lines.stdout.readline().strip().decode()
                 print(line)
                 
             
