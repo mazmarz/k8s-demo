@@ -41,6 +41,13 @@
        name: firewalld
        enabled: no
        state: stopped
+
+   - name: ensure net.bridge.bridge-nf-call-iptables is set to 1
+     sysctl:
+       name: net.bridge.bridge-nf-call-iptables
+       value: 1
+       state: present
+
        
 - hosts: master
   become: yes

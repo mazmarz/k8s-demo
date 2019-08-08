@@ -31,7 +31,7 @@ The following is a list of software required to run this demo:
 The following are the macro steps I need to be done in order to run this demo. 
 
   
-  * Log into the cloud environment and download the service-account key file which will allow you to work with the environment.  Place this file in the base directory of the demo.  The *runnit.py* script will find it.  If the are more than one of these files, it will use the latest version.
+  * Log into the cloud environment and download the service-account key file which will allow you to work with the environment.  Place this file in the base directory of the demo.  The *runnit* script will find it.  If the are more than one of these files, it will use the latest version.
   * The script will do automatically the following:
 * Setup ssh keys in order to access the cluster remotely.  With GCP this can be accomplished with gcloud compute config-ssh.  Vagrant usually handles this on its own, but needs this with GCP.
 * Spin up the virtual machines.  As mentioned, I have chosen Vagrant since I am familiar with it and because it is not provider specific.
@@ -40,7 +40,7 @@ The following are the macro steps I need to be done in order to run this demo.
 * Setup a tcp load balancer in GCP.  Of course a static public IP is required and once this is created the nginx service manifest is patched with this address.
 
 
-* The *runnit.py* script all common commands from vagrant.  For example, to log into the master node, simply type *runnit.py ssh master*.  To bring down the cluster, *runnity.py destroy -f*.
+* The *runnit* script all common commands from vagrant.  For example, to log into the master node, simply type `runnit ssh master`.  To bring down the cluster, `runnity.py destroy -f`.
     
   
 # How to run demo
@@ -50,8 +50,11 @@ The following are the macro steps I need to be done in order to run this demo.
  
   * Clone the git repository onto your local machine.
   * Retrieve the json key file for the service account and place it into to the root directory
-  * There script "runnit.py" is used to tie everything together.  It acts a wrapper for vagrant, hence it accepts all the common vagrant arguments: *up, down, ssh, destroy*
-  * Issue the command: *runnit up*.  This should bring up the cluster and set up the load-balancer.  The static IP will be printed to the screen (along with a lot of other information) and can be used to update an /etc/hosts file.
-  * Once everything is up, including the load balancer, one can run the simple demo.  The demo assumes the local installation of the "ab" program from apache.org.  
+  * There script *runnit* is used to tie everything together.  It acts a wrapper for vagrant, hence it accepts all the common vagrant arguments: *up, down, ssh, destroy*
+  * Issue the command: `runnit up`.  This should bring up the cluster and set up the load-balancer.  The static IP will be printed to the screen (along with a lot of other information) and can be used to update an /etc/hosts file.
+  
+  **Running demo**
+  
+  Once everything is up, hopefully without errors (if there is an error, try doing a *runnit destroy -f* followed by a *runnit up*), you can try a `runnit test`.  This will setup a monitoring horizontal pod autoscaler on the two namespaces of the demo. **One needs to wait till the number of pods goes down to 1 before starting the test.**  This is because it takes time for the metric controller to settle and the hpa controller to react.  Once this state has been achieved, from another terminal one can launch: `ab -c 1000 -n 20000 http://stagging-guestbook.mstakx.io/` and/or `ab -c 1000 -n 20000 http://guestbook.mstakx.io/`
   
   
