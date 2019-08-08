@@ -146,12 +146,19 @@ if len(sys.argv) > 1:
                           
                 
         print("starting vargrant")
-        return_code = subprocess.call(['vagrant','up'], env=dict(os.environ) )
+        return_code = subprocess.call(['vagrant','up','--no-provision'], env=dict(os.environ) )
         print("finished vargrant")
         if return_code != 0 :
             print("Something went wrong in vagrant, exiting ...")
             sys.exit(2)
 
+        try:
+            subprocess.Popen(['vagrant','provision'], env=dict(os.environ) ).wait()
+
+        except subprocess.CalledProcessError:
+            sys.exit(-2)
+
+            
             
 #    Finally launch the ansible code:
         ansibleSetup()
@@ -201,7 +208,7 @@ if len(sys.argv) > 1:
 
 #            subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl  get hpa -A --watch".format(ip),shell=True)
 #            subprocess.Popen(["ab","-c","1000","-n","20000","http://stagging-guestbook.mstakx.io/"]).wait()
-            lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl -n stagging get hpa --watch".format(ip),shell=True,stdout=subprocess.PIPE)
+            lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl get hpa -A --watch".format(ip),shell=True,stdout=subprocess.PIPE)
 #            subprocess.Popen(["ab","-c","1000","-n","10000","http://stagging-guestbook.mstakx.io/"])
             while lines.poll() is None:
                 line=lines.stdout.readline().strip().decode()
