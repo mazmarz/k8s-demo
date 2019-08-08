@@ -48,7 +48,7 @@ The following are the macro steps I need to be done in order to run this demo.
  **Initial Setup:**
  
  
-  * Clone the git repository onto your local machine a log into the GCP platform. 
+  * Clone the git repository onto your local machine.
   * Retrieve the json key file for the service account and place it into to the root directory
   * There script "runnit.py" is used to tie everything together.  It acts a wrapper for vagrant, hence it accepts all the common vagrant arguments: *up, down, ssh, destroy*
   * Issue the command: *runnit up*.  This should bring up the cluster and set up the load-balancer.  The static IP will be printed to the screen (along with a lot of other information) and can be used to update an /etc/hosts file.
