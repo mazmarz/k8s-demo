@@ -1,5 +1,0 @@
-4    Swiper: box
-   {ID: 1,  hostname: 'K8m', box: 'mgmazzucco/CentOS7_ESX', MAC: '00:50:56:1a:4e:82' },
-   {ID: 2,  hostname: 'K8n1', box: 'mgmazzucco/CentOS7_ESX' , MAC: '00:50:56:1b:7a:db' },
-   {ID: 3,  hostname: 'K8n2', box: 'mgmazzucco/CentOS7_ESX' , MAC: '00:50:56:1c:cb:52' }
-   config.vm.box = "google/gce"
