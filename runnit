@@ -13,6 +13,8 @@ def ansibleSetup():
 
     try:
         print("#### Setting up the K8s cluster")
+        subprocess.Popen(["ansible-playbook", "k8s_install_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+
         subprocess.Popen(["ansible-playbook", "cluster_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
     except subprocess.CalledProcessError:
         sys.exit(-2)
@@ -143,14 +145,12 @@ if len(sys.argv) > 1:
             sys.exit(-2)
                           
                 
-        try:
-#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'up',])
-            print("starting vargrant")
-            proc = subprocess.Popen(['vagrant','up'], env=dict(os.environ) )
-            proc.wait()
-            print("finished vargrant")
-        except subprocess.CalledProcessError:
-            sys.exit(-2)
+        print("starting vargrant")
+        return_code = subprocess.call(['vagrant','up'], env=dict(os.environ) )
+        print("finished vargrant")
+        if return_code != 0 :
+            print("Something went wrong in vagrant, exiting ...")
+            sys.exit(2)
 
             
 #    Finally launch the ansible code:
@@ -198,7 +198,9 @@ if len(sys.argv) > 1:
 
         try:
             print("ip: " + ip)
-            subprocess.Popen(["ab","-c","1000","-n","10000","http://stagging-guestbook.mstakx.io/"]).wait()
+
+            subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl  get hpa -A --watch".format(ip),shell=True)
+            subprocess.Popen(["ab","-c","1000","-n","20000","http://stagging-guestbook.mstakx.io/"]).wait()
             lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl -n stagging get hpa --watch".format(ip),shell=True,stdout=subprocess.PIPE)
             subprocess.Popen(["ab","-c","1000","-n","10000","http://stagging-guestbook.mstakx.io/"])
             while lines.poll() is None:
