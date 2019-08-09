@@ -7,30 +7,31 @@ import re
 import json
 import argparse
 
+k8_user = "marco"
 parser = argparse.ArgumentParser(description='Setup K8s environment and run some tests')
 
 def ansibleSetup():
 
     try:
         print("#### Setting up the K8s cluster")
-        subprocess.Popen(["ansible-playbook", "k8s_install_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+        subprocess.Popen(["ansible-playbook", "k8s_install_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/google_compute_engine", "-u" ,k8_user], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
 
-        subprocess.Popen(["ansible-playbook", "cluster_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+        subprocess.Popen(["ansible-playbook", "cluster_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/google_compute_engine", "-u" ,k8_user], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
     except subprocess.CalledProcessError:
         sys.exit(-2)
     try:
         print("### Setting up the Ingress controller")
-        subprocess.Popen(["ansible-playbook", "ingress_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+        subprocess.Popen(["ansible-playbook", "ingress_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/google_compute_engine", "-u" ,k8_user], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
     except subprocess.CalledProcessError:
         sys.exit(-2)
     try:
         print("### Setting up the metric controller")
-        subprocess.Popen(["ansible-playbook", "metric_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+        subprocess.Popen(["ansible-playbook", "metric_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/google_compute_engine", "-u" ,k8_user], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
     except subprocess.CalledProcessError:
         sys.exit(-2)
     try:
         print("### Setting up the guestbook")
-        subprocess.Popen(["ansible-playbook", "guestbook_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
+        subprocess.Popen(["ansible-playbook", "guestbook_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/google_compute_engine", "-u" ,k8_user], env={"ANSIBLE_HOST_KEY_CHECKING": "False"}).wait()
     except subprocess.CalledProcessError:
         sys.exit(-2)
 
@@ -167,7 +168,7 @@ if len(sys.argv) > 1:
 
         try:
             print("### Setting up static IP address")
-            subprocess.Popen(["ansible-playbook", "patch_svc_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/id_rsa", "-u" ," marco"], env={"ANSIBLE_HOST_KEY_CHECKING": "False", "ip_address": ip_address }).wait()
+            subprocess.Popen(["ansible-playbook", "patch_svc_playbook.yaml", "-i", ".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory", "--private-key=~/.ssh/google_compute_engine", "-u" ,k8_user ], env={"ANSIBLE_HOST_KEY_CHECKING": "False", "ip_address": ip_address }).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
