@@ -3,77 +3,77 @@
   tasks:
     - name: Create Staging Namespace
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl get ns stagging  -ojsonpath='{.status.phase}' | grep Active ||  kubectl create ns stagging
       args:
         chdir: $HOME
         creates: ns_creation.txt
     - name: Create Production Namespace
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell:  kubectl get ns production -ojsonpath='{.status.phase}' | grep Active ||  kubectl create ns production
     - name: Create Guestbook in Staging Namespace
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl -n stagging apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook/all-in-one/guestbook-all-in-one.yaml
       args:
         chdir: $HOME
         creates: guestbook_staging.txt
     - name: Create Guestbook in production Namespace
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl -n production apply -f https://raw.githubusercontent.com/kubernetes/examples/master/guestbook/all-in-one/guestbook-all-in-one.yaml
       args:
         chdir: $HOME
         creates: guestbook_staging.txt
     - name: Finally startup HPA for stagging guestbook frontend (copy manifest)
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       template:
         src: frontend_stagging_hpa.yaml
         dest: frontend_stagging_hpa.yaml
     - name: Finally startup HPA for stagging guestbook frontend (apply manifest)
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl apply -f frontend_stagging_hpa.yaml
       args:
         chdir: $HOME
         creates: guestbook_stagging.txt
     - name: Finally startup HPA for production guestbook frontend (copy manifest)
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       template:
         src: frontend_production_hpa.yaml
         dest: frontend_production_hpa.yaml
     - name: Finally startup HPA for production guestbook frontend (apply manifest)
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl apply -f frontend_production_hpa.yaml
       args:
         chdir: $HOME
         creates: guestbook_staging.txt
     - name: Copy ingress manifest for stagging
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       template:
         src: ingress_stagging.yaml
         dest: ingress_stagging.yaml
     - name: Copy ingress manifest for production
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       template:
         src: ingress_production.yaml
         dest: ingress_production.yaml
     - name: Setup ingress controller for stagging namespace 
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl apply -f ingress_stagging.yaml
       args:
         chdir: $HOME
         creates: ingress_staging.txt
     - name: Setup ingress controller for production namespace 
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl apply -f ingress_production.yaml
       args:
         chdir: $HOME

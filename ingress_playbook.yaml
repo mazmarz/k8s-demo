@@ -4,14 +4,14 @@
   tasks:
     - name: install nginx ingress pod
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
       args:
         chdir: $HOME
         creates: guestbook
     - name: Start ingress controller
       become: yes
-      become_user: marco
+      become_user: "{{ k8_user }}"
       shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
       
       
