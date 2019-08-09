@@ -61,10 +61,9 @@ Vagrant.configure("2") do |config|
       
       hostname.vm.provider :google do |google, override|
         google.google_project_id = projectID
-        google.google_json_key_location = "/home/marco/puppet/#{credentials}"
+        google.google_json_key_location = "./#{credentials}"
         google.image_family = 'rhel-7'
         google.machine_type = 'g1-small'
-        google.instance_group = 'vm-pool'
         google.name = node[:hostname]
         override.ssh.username = user
         override.ssh.private_key_path = "~/.ssh/google_compute_engine"
