@@ -9,7 +9,7 @@ To automate the creation of a kubernetes cluster, using kubeadm, so as to be abl
   
 
 
-There was an attempt to avoid cloud provider specific choices.  Specifically, I wanted to avoid writing the setup in a cloud specific SDK or API.  The use of vagrant and   There certainly are more clever ways to do this and hopefully, in my spare time, I will have time
+There was an attempt to avoid cloud provider specific choices use of vagrant and ansible.   There certainly are more clever ways to do this and hopefully, in my spare time, I will have time
 to update this in the future.
 
 Unfortunately at the moment, the number of nodes and names of the nodes has been hardcoded (master, worker1 and worker2).  With a little effort this can be changed in a newer version.
@@ -28,12 +28,12 @@ The following is a list of software required to run this demo:
 # Steps: #
 
 
-The following are the macro steps I need to be done in order to run this demo. 
+The following are the macro steps which need to be done in order to run this demo. 
 
   
-  * Log into the cloud environment and download the service-account key file which will allow you to work with the environment.  Place this file in the base directory of the demo.  The *runnit* script will find it.  If the are more than one of these files, it will use the latest version.
+  * Retrieve the json key file for the service account and place it into to the root directory 
   * The script will do automatically the following:
-* Setup ssh keys in order to access the cluster remotely.  With GCP this can be accomplished with gcloud compute config-ssh.  Vagrant usually handles this on its own, but needs this with GCP.
+* Setup ssh keys in order to access the cluster remotely.  With GCP this can be accomplished with gcloud compute config-ssh.  Vagrant can handle this on its own but not with GCP it seems.
 * Spin up the virtual machines.  As mentioned, I have chosen Vagrant since I am familiar with it and because it is not provider specific.
 * Setup the Kubernetes inside on the VMs.  Here the choice went to Ansible.  First and foremost because it is agentless.  Though vagrant offers a provisioning method, a good part of the setup with ansible I had to do outside of vagrant.
 * Apply all manifests required for this specific demo.  Again with the help of Ansible this was rather straight forward.  When possible I utilized non static manifests (from the internet).  The exception to this was the metric manifest which has a known bug and hence I found it easier to work with a modified manifest which is included in this repository.
@@ -49,9 +49,9 @@ The following are the macro steps I need to be done in order to run this demo.
  
  
   * Clone the git repository onto your local machine.
-  * Retrieve the json key file for the service account and place it into to the root directory
+  * Log into the cloud environment and download the service-account key file which will allow you to work with the environment.  Place this file in the base directory of the demo.  The *runnit* script will find it.  If the are more than one of these files, it will use the latest version.
   * There script *runnit* is used to tie everything together.  It acts a wrapper for vagrant, hence it accepts all the common vagrant arguments: *up, down, ssh, destroy*
-  * Issue the command: `runnit up`.  This should bring up the cluster and set up the load-balancer.  The static IP will be printed to the screen (along with a lot of other information) and can be used to update an /etc/hosts file.
+  * Issue the command: `runnit up`.  This should bring up the cluster and set up the load-balancer.  The static IP will be printed to the screen (along with a lot of other information, to be cleaned up in the future) and can be used to update an /etc/hosts file.
   
   **Running demo**
   
