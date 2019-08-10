@@ -80,18 +80,6 @@ def networkSetup():
 
 
 
-
-#
-#   [marco@dude templates]$ gcloud compute addresses list
-#   NAME   REGION       ADDRESS      STATUS
-#   lb-ip  us-central1  34.66.93.63  IN_USE
-
-#  
-#
-#
-#
-
-
 listing = subprocess.getoutput('ls -rt')
 
 for file in listing.splitlines():
@@ -116,7 +104,6 @@ if len(sys.argv) > 1:
         else:
             machine = ""
         try:
-#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'ssh',machine] )
             subprocess.Popen(['vagrant','ssh', machine], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
@@ -124,7 +111,6 @@ if len(sys.argv) > 1:
     elif vagrantCommand == "provision":            
             
         try:
-#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'provision',])
             subprocess.Popen(['vagrant','provision'], env=dict(os.environ) ).wait()
 
         except subprocess.CalledProcessError:
@@ -175,21 +161,18 @@ if len(sys.argv) > 1:
 
     elif vagrantCommand == "status":
         try:
-#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'status'] )
             subprocess.Popen(['vagrant','status'], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
     elif vagrantCommand == "halt":
         try:
-#            subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'halt'] )
             subprocess.Popen(['vagrant','halt'], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
 
     elif vagrantCommand == "destroy":
         try:
- #           subprocess.check_call(['vagrant',"--project_id={}".format(data['project_id']),"--credentials={}".format(theFile),'destroy'] )
             subprocess.Popen(['vagrant','destroy','-f'], env=dict(os.environ) ).wait()
         except subprocess.CalledProcessError:
             sys.exit(-2)
@@ -207,8 +190,7 @@ if len(sys.argv) > 1:
         try:
             print("ip: " + ip)
 
-#            subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl  get hpa -A --watch".format(ip),shell=True)
-#            subprocess.Popen(["ab","-c","1000","-n","20000","http://stagging-guestbook.mstakx.io/"]).wait()
+
             lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl get hpa -A --watch".format(ip),shell=True,stdout=subprocess.PIPE)
 #            subprocess.Popen(["ab","-c","1000","-n","10000","http://stagging-guestbook.mstakx.io/"])
             while lines.poll() is None:
@@ -232,17 +214,3 @@ else:
         
 
     
-
-#    gcloud compute instance-groups unmanaged create k8s --zone us-central1-f
-#    gcloud compute instance-groups set-named-ports  k8s --named-ports tcp80:80 --zone us-central1-f 
-#    gcloud compute instance-groups unmanaged add-instances k8s --instances master,worker1,worker2 --zone us-central1-f
-#    gcloud compute health-checks create  tcp my-health --port 80     
-#    gcloud compute backend-services create lb --global --protocol TCP --port-name tcp80 --health-checks my-health
-#    gcloud compute target-tcp-proxies create my-tcp-lb-target-proxy --backend-service lb --proxy-header NONE
-# gcloud compute addresses list
-# gcloud compute backend-services create lb-regional  --protocol TCP --port-name tcp80 --health-checks my-health --region us-central1 --load-balancing-scheme INTERNAL
-
-
-#     gcloud compute target-pools add-instances www-pool  --instances www1,www2,www3   --instances-zone us-central1-b
-# gcloud compute addresses create network-lb-ip-1     --region us-central1
-# gcloud compute forwarding-rules create www-rule     --region us-central1     --ports 80     --address network-lb-ip-1     --target-pool www-pool
