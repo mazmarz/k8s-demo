@@ -9,7 +9,7 @@ import paramiko
 
 #  import argparse
 
-k8_user = "marco"
+k8_user = os.environ['USER']
 #  parser = argparse.ArgumentParser(description='Setup K8s environment and run some tests')
 
 def ansibleSetup():
