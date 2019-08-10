@@ -6,11 +6,19 @@ import os
 import re
 import json
 import paramiko
+import signal
 
 #  import argparse
 
 k8_user = os.environ['USER']
 #  parser = argparse.ArgumentParser(description='Setup K8s environment and run some tests')
+
+def signal_handler(signal, frame):
+    print("exiting ...")
+    # for p in jobs:
+    #     p.terminate()
+    sys.exit(0)
+
 
 def ansibleSetup():
 
@@ -180,6 +188,9 @@ if len(sys.argv) > 1:
             sys.exit(-2)
 
     elif vagrantCommand == "test":
+
+
+        signal.signal(signal.SIGINT, signal_handler)
 
         ip=''
         with open(".vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory",mode='r') as fp:
