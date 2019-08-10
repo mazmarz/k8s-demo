@@ -199,16 +199,16 @@ if len(sys.argv) > 1:
 
         stdin, stdout, stderr = ssh.exec_command('kubectl get hpa -A --watch', get_pty=True)
             
-            #            lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl get hpa -A --watch".format(ip),shell=True,stdout=subprocess.PIPE)
-            #            subprocess.Popen(["ab","-c","1000","-n","10000","http://stagging-guestbook.mstakx.io/"])
-            #            while lines.poll() is None:
-            #                line=lines.stdout.readline().strip().decode()
-            #                print(line)
             
         for line in iter(stdout.readline, ""):
             print(line, end="")
             
         
+            #            lines = subprocess.Popen("ssh {} -i ~/.ssh/google_compute_engine kubectl get hpa -A --watch".format(ip),shell=True,stdout=subprocess.PIPE)
+            #            subprocess.Popen(["ab","-c","1000","-n","10000","http://stagging-guestbook.mstakx.io/"])
+            #            while lines.poll() is None:
+            #                line=lines.stdout.readline().strip().decode()
+            #                print(line)
             
 
         
