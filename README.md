@@ -33,11 +33,11 @@ The following are the macro steps which need to be done in order to run this dem
   
   * Retrieve the json key file for the service account and place it into to the root directory 
   * The script will do automatically the following:
-* Setup ssh keys in order to access the cluster remotely.  With GCP this can be accomplished with gcloud compute config-ssh.  Vagrant can handle this on its own but not with GCP it seems.
-* Spin up the virtual machines.  As mentioned, I have chosen Vagrant since I am familiar with it and because it is not provider specific.
-* Setup the Kubernetes inside on the VMs.  Here the choice went to Ansible.  First and foremost because it is agentless.  Though vagrant offers a provisioning method, a good part of the setup with ansible I had to do outside of vagrant.
-* Apply all manifests required for this specific demo.  Again with the help of Ansible this was rather straight forward.  When possible I utilized non static manifests (from the internet).  The exception to this was the metric manifest which has a known bug and hence I found it easier to work with a modified manifest which is included in this repository.
-* Setup a tcp load balancer in GCP.  Of course a static public IP is required and once this is created the nginx service manifest is patched with this address.
+    - Setup ssh keys in order to access the cluster remotely.  With GCP this can be accomplished with gcloud compute config-ssh.  Vagrant can handle this on its own but not with GCP it seems.
+    - Spin up the virtual machines.  As mentioned, I have chosen Vagrant since I am familiar with it and because it is not provider specific.
+    - Setup the Kubernetes inside on the VMs.  Here the choice went to Ansible.  First and foremost because it is agentless.  Though vagrant offers a provisioning method, a good part of the setup with ansible I had to do outside of vagrant.
+    - Apply all manifests required for this specific demo.  Again with the help of Ansible this was rather straight forward.  When possible I utilized non static manifests (from the internet).  The exception to this was the metric manifest which has a known bug and hence I found it easier to work with a modified manifest which is included in this repository.
+    - Setup a tcp load balancer in GCP.  Of course a static public IP is required and once this is created the nginx service manifest is patched with this address.
 
 
 * The *runnit* script all common commands from vagrant.  For example, to log into the master node, simply type `runnit ssh master`.  To bring down the cluster, `runnity.py destroy -f`.
