@@ -208,6 +208,12 @@ if len(sys.argv) > 1:
         ssh.load_system_host_keys()
         ssh.connect(ip)
 
+        stdin, stdout, stderr = ssh.exec_command('kubectl get ingress -A', get_pty=True)
+        for line in iter(stdout.readline, ""):
+            print(line, end="")
+
+
+        
         stdin, stdout, stderr = ssh.exec_command('kubectl get hpa -A --watch', get_pty=True)
             
             
