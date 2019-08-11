@@ -32,7 +32,7 @@ The following are the macro steps which need to be done in order to run this dem
 
   
   * Retrieve the json key file for the service account and place it into to the root directory 
-  * There script *runnit* is used to tie everything together.  It acts a wrapper for vagrant, hence it accepts all the common vagrant arguments: *up, provision, ssh, destroy*  The script will do automatically the following:
+  * The script *runnit* is used to tie everything together.  It acts as a wrapper for vagrant, hence it accepts all the common vagrant arguments: *up, provision, ssh, destroy*  The script will do automatically the following:
     - Setup ssh keys in order to access the cluster remotely.  With GCP this can be accomplished with gcloud compute config-ssh.  Vagrant can handle this on its own but not with GCP it seems.
     - Spin up the virtual machines.  As mentioned, I have chosen Vagrant since I am familiar with it and because it is not provider specific.
     - Setup the Kubernetes inside on the VMs.  Here the choice went to Ansible.  First and foremost because it is agentless.  Though vagrant offers a provisioning method, a good part of the setup with ansible I had to do outside of vagrant.
@@ -49,7 +49,7 @@ The following are the macro steps which need to be done in order to run this dem
  
  
   * Clone the git repository onto your local machine.
-  * Log into the cloud environment and download the service-account key file which will allow you to work with the environment.  Place this file in the base directory of the demo.  The *runnit* script will find search for it there and if the are more than one of these files, it will use the latest version.
+  * Log into the cloud environment and download the service-account key file which will allow you to work with the environment.  Place this file in the base directory of the demo.  The *runnit* script will find search for it there and if there are more than one of these files, it will use the latest version.
   * Issue the command: `runnit up`.  This should bring up the cluster and set up the load-balancer.  The static IP will be printed to the screen (along with a lot of other information, to be cleaned up in the future) and can be used to update an /etc/hosts file.
   
   **Running demo**
@@ -59,4 +59,4 @@ The following are the macro steps which need to be done in order to run this dem
   
 # Notes on demo
 
-The demo sizing was on the small side since the objective was only to demonstrate autoscaling.  In the Vagrantfile a g1-small VM size was selected.  This also means that only one vCPU was available which meant that the minimum 2 vCPU pre-check in kubeadm had to be disabled.  To keep things simple also for this demo, the standard metric-server was used. Of course Prometheus would provide much more complete monitoring.  In particular it has more metrics beyond simple CPU utilization which was used for this demo.
+The demo sizing was on the small side since the objective was only to demonstrate autoscaling.  In the Vagrantfile a g1-small VM size was selected.  This also means that only one vCPU was available which meant that the minimum 2 vCPU pre-check in kubeadm had to be disabled.  To keep things simple for this demo, the standard metric-server was used. Of course a monitoring server such as Prometheus would provide much more complete monitoring.  In particular it has more metrics beyond simple CPU utilization which was used for this demo which not ideal for scaling up a front-end webserver.  For these type of pods one would normally use more indicative metrics, such as network traffic. 
